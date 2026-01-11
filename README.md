@@ -16,7 +16,7 @@ You'll need a Raspberry Pi 4 or 5 (suggested, although 3 and Zero 2 W may techni
 
 1. Download the [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
-2. Under the Operating System drop down, select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)` "A port of Debian Bookworm" (these instructions tested with the 2024-07-04 release).
+2. Under the Operating System drop down, select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)` "A port of Debian Trixie" (these instructions tested with the 2025-12-04 release).
 
 3. Under the storage dropdown select your SD card
 
@@ -26,7 +26,7 @@ You'll need a Raspberry Pi 4 or 5 (suggested, although 3 and Zero 2 W may techni
 
 6. Set the `GENERAL` settings as follows:
 
-- Set hostname `impsypi.local`
+- Set hostname `impsypi`
 - Set username and password:
   - Username: `pi`
   - Password: `raspberry` (or your choice of another password, but you will need to remember it)

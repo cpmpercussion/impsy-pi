@@ -6,6 +6,15 @@
   vars:
 
     impsy_loc: "impsy"
+    impsy_python_version: 3.11.8
+    pyenv_python_versions:
+        - 3.11.8
+    pyenv_global:
+        - 3.11.8
+
+  roles:
+  
+    - staticdev.pyenv
 
   tasks:
 
@@ -65,13 +74,23 @@
     tags:
       - setup
 
+  - name: Set up Poetry env IMPSY
+    command: poetry env use {{ impsy_python_version }}
+    args:
+      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+    environment: 
+      PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
+      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
+    tags:
+      - setup
+
   - name: Poetry Install IMPSY
     command: poetry install --sync
     args:
       chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
     environment: 
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin'
+      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
     tags:
       - setup
 

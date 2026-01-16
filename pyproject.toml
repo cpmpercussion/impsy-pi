@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "impsy-rpi-image-maker"
-version = "0.1.0"
+version = "0.2.0"
 description = "Creates Raspberry Pi OS images using Ansible and Pi-CI"
 authors = ["Charles Martin <cpm@charlesmartin.com.au>"]
 license = "MIT"

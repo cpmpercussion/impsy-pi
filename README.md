@@ -64,8 +64,8 @@ You should be able to:
 
 - SSH to the pi at `pi@impsypi.local`
 - Test that the systemd services are working:
-  - `sudo systemd status impsy-run.service`
-  - `sudo systemd status impsy-web.service`
+  - `sudo systemctl status impsy-run.service`
+  - `sudo systemctl status impsy-web.service`
 - View the IMPSY web UI at `http://impsypi.local:4000` or `http://169.254.1.107:4000`
 
 

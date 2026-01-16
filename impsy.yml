@@ -13,7 +13,7 @@
         - 3.11.8
 
   roles:
-  
+    # https://galaxy.ansible.com/ui/standalone/roles/staticdev/pyenv/documentation/
     - staticdev.pyenv
 
   tasks:
@@ -75,7 +75,7 @@
       - setup
 
   - name: Set up Poetry env IMPSY
-    command: poetry env use {{ impsy_python_version }}
+    command: poetry env use {{ ansible_env.HOME }}/pyenv/versions/3.11.8/bin/python
     args:
       chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
     environment: 

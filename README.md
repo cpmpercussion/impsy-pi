@@ -71,7 +71,7 @@ You should be able to:
 
 ## Save SD card image and compress it
 
-Once you have verified that everything is working, time to suck off this image, basically following [these instructions](https://github.com/monsieurborges/raspberry-pi/blob/master/setup/clone-sd-card.md).
+Once you have verified that everything is working, time to copy the image and generate a compressed release, basically following [these instructions](https://github.com/monsieurborges/raspberry-pi/blob/master/setup/clone-sd-card.md).
 
 1. Shutdown the Raspberry Pi (gracefully), take out the SD card and plug it into a computer
 

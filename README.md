@@ -62,12 +62,11 @@ That's it! That should take a while, go get a coffee.
 
 You should be able to:
 
-- SSH to the pi at `pi@impsypi.local`
+- SSH to the pi at `pi@impsypi.local` or `pi@10.12.194.1`
 - Test that the systemd services are working:
   - `sudo systemctl status impsy-run.service`
   - `sudo systemctl status impsy-web.service`
-- View the IMPSY web UI at `http://impsypi.local:4000` or `http://169.254.1.107:4000`
-
+- View the IMPSY web UI at `http://impsypi.local:4000` or `http://10.12.194.1:4000`
 
 ## Save SD card image and compress it
 

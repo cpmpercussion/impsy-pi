@@ -10,13 +10,15 @@ The releases contain images that can be used to get an IMPSY system up and runni
 
 You can flash the custom image to an SD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
+The script enables the [Raspberry Pi USB Gadget](https://github.com/raspberrypi/rpi-usb-gadget) which will allow SSH and network connection to a Raspberry Pi over a USB cable. The default IP address will be `10.12.194.1` and the hostname `impsypi.local`.
+
 ## Setting up the starting image and Raspberry Pi
 
 You'll need a Raspberry Pi 4 or 5 (suggested, although 3 and Zero 2 W may technically work) and a 16GB SD card (it's better not to use a huge SD card to save time when copying it).
 
 1. Download the [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
-2. Under the Operating System drop down, select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)` "A port of Debian Bookworm" (these instructions tested with the 2024-07-04 release).
+2. Under the Operating System drop down, select `Raspberry Pi OS (other)` and then `Raspberry Pi OS Lite (64-bit)` "A port of Debian Trixie" (these instructions tested with the 2025-12-04 release).
 
 3. Under the storage dropdown select your SD card
 
@@ -26,7 +28,7 @@ You'll need a Raspberry Pi 4 or 5 (suggested, although 3 and Zero 2 W may techni
 
 6. Set the `GENERAL` settings as follows:
 
-- Set hostname `impsypi.local`
+- Set hostname `impsypi`
 - Set username and password:
   - Username: `pi`
   - Password: `raspberry` (or your choice of another password, but you will need to remember it)
@@ -62,16 +64,15 @@ That's it! That should take a while, go get a coffee.
 
 You should be able to:
 
-- SSH to the pi at `pi@impsypi.local`
+- SSH to the pi at `pi@impsypi.local` or `pi@10.12.194.1`
 - Test that the systemd services are working:
-  - `sudo systemd status impsy-run.service`
-  - `sudo systemd status impsy-web.service`
-- View the IMPSY web UI at `http://impsypi.local:4000` or `http://169.254.1.107:4000`
-
+  - `sudo systemctl status impsy-run.service`
+  - `sudo systemctl status impsy-web.service`
+- View the IMPSY web UI at `http://impsypi.local:4000` or `http://10.12.194.1:4000`
 
 ## Save SD card image and compress it
 
-Once you have verified that everything is working, time to suck off this image, basically following [these instructions](https://github.com/monsieurborges/raspberry-pi/blob/master/setup/clone-sd-card.md).
+Once you have verified that everything is working, time to copy the image and generate a compressed release, basically following [these instructions](https://github.com/monsieurborges/raspberry-pi/blob/master/setup/clone-sd-card.md).
 
 1. Shutdown the Raspberry Pi (gracefully), take out the SD card and plug it into a computer
 

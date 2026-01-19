@@ -6,6 +6,15 @@
   vars:
 
     impsy_loc: "impsy"
+    impsy_python_version: 3.11.8
+    pyenv_python_versions:
+        - 3.11.8
+    pyenv_global:
+        - 3.11.8
+
+  roles:
+    # https://galaxy.ansible.com/ui/standalone/roles/staticdev/pyenv/documentation/
+    - staticdev.pyenv
 
   tasks:
 
@@ -33,6 +42,7 @@
         - wget
         - patchelf
         - pipx
+        - rpi-usb-gadget
     tags:
      - packages
 
@@ -42,6 +52,12 @@
       clean: true 
     tags:
      - packages
+
+  - name: Activate rpi-usb-gadget following `https://github.com/raspberrypi/rpi-usb-gadget
+    become: true
+    command: rpi-usb-gadget on
+    tags:
+      - setup
 
   - name: Install Poetry
     # become: true
@@ -58,13 +74,23 @@
     tags:
       - setup
 
+  - name: Set up Poetry env IMPSY
+    command: poetry env use {{ ansible_env.HOME }}/pyenv/versions/3.11.8/bin/python
+    args:
+      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+    environment: 
+      PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
+      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
+    tags:
+      - setup
+
   - name: Poetry Install IMPSY
     command: poetry install --sync
     args:
       chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
     environment: 
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin'
+      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
     tags:
       - setup
 
@@ -122,32 +148,34 @@
     tags:
       - startup
 
-  - name: "Setup Ethernet gadget network interface according to: https://forums.raspberrypi.com/viewtopic.php?p=2184846"
-    become: true
-    template:
-      src: templates/g_ether.j2
-      dest: /etc/network/interfaces.d/g_ether
-    tags:
-      - startup
+# No more manual USB gadget setup needed with rpi-usb-gadget package
 
-  - name: Enable dwc2 in /boot/firmware/config.txt
-    become: true
-    lineinfile:
-      path: /boot/firmware/config.txt
-      line: 'dtoverlay=dwc2'
-      insertafter: '[all]'
-    tags:
-      - startup
+  # - name: "Setup Ethernet gadget network interface according to: https://forums.raspberrypi.com/viewtopic.php?p=2184846"
+  #   become: true
+  #   template:
+  #     src: templates/g_ether.j2
+  #     dest: /etc/network/interfaces.d/g_ether
+  #   tags:
+  #     - startup
+
+  # - name: Enable dwc2 in /boot/firmware/config.txt
+  #   become: true
+  #   lineinfile:
+  #     path: /boot/firmware/config.txt
+  #     line: 'dtoverlay=dwc2'
+  #     insertafter: '[all]'
+  #   tags:
+  #     - startup
 
 # Replaces the cmdline.txt line by checking for the "rootwait" at the end. Negative lookahead to not replace if modules-load line is already there.
 
-  - name: Ensure modules-load=dwc2,g_ether at end of /boot/firmware/cmdline.txt
-    become: true
-    lineinfile: 
-      dest: /boot/firmware/cmdline.txt
-      backrefs: true
-      state: present
-      regexp: '(.*rootwait(?!\s+modules-load=dwc2,g_ether))'
-      line: '\1 modules-load=dwc2,g_ether'
-    tags:
-      - startup
+  # - name: Ensure modules-load=dwc2,g_ether at end of /boot/firmware/cmdline.txt
+  #   become: true
+  #   lineinfile: 
+  #     dest: /boot/firmware/cmdline.txt
+  #     backrefs: true
+  #     state: present
+  #     regexp: '(.*rootwait(?!\s+modules-load=dwc2,g_ether))'
+  #     line: '\1 modules-load=dwc2,g_ether'
+  #   tags:
+  #     - startup

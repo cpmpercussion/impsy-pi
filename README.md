@@ -10,6 +10,8 @@ The releases contain images that can be used to get an IMPSY system up and runni
 
 You can flash the custom image to an SD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
+The script enables the [Raspberry Pi USB Gadget](https://github.com/raspberrypi/rpi-usb-gadget) which will allow SSH and network connection to a Raspberry Pi over a USB cable. The default IP address will be `10.12.194.1` and the hostname `impsypi.local`.
+
 ## Setting up the starting image and Raspberry Pi
 
 You'll need a Raspberry Pi 4 or 5 (suggested, although 3 and Zero 2 W may technically work) and a 16GB SD card (it's better not to use a huge SD card to save time when copying it).

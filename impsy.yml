@@ -8,9 +8,9 @@
     impsy_loc: "impsy"
     impsy_python_version: 3.11.8
     pyenv_python_versions:
-        - 3.11.8
+        - '{{ impsy_python_version }}'
     pyenv_global:
-        - 3.11.8
+        - '{{ impsy_python_version }}'
 
   roles:
     # https://galaxy.ansible.com/ui/standalone/roles/staticdev/pyenv/documentation/
@@ -75,7 +75,7 @@
       - setup
 
   - name: Set up Poetry env IMPSY
-    command: poetry env use {{ ansible_env.HOME }}/pyenv/versions/3.11.8/bin/python
+    command: poetry env use {{ ansible_env.HOME }}/pyenv/versions/{{ impsy_python_version }}/bin/python
     args:
       chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
     environment: 

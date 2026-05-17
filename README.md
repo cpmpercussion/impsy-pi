@@ -90,9 +90,13 @@ Once you have verified that everything is working, time to copy the image and ge
 
   - Then I extract the image with `time sudo gdd if=/dev/rdiskX of=./impsy.img bs=16M status=progress && sync` (N.B. `rdisk` for "raw disk").
 
-4. Use [PiShrink](https://github.com/Drewsif/PiShrink) to compress the image from the docker image `monsieurborges/pishrink`
+4. Clone [PiShrink](https://github.com/Drewsif/PiShrink) and build the docker image:
 
-  - `docker run --privileged=true --rm --volume $(pwd):/workdir monsieurborges/pishrink pishrink -Zv impsy.img impsy-shrunk.img`
+  - `git clone https://github.com/Drewsif/PiShrink && cd PiShrink`
+
+  - `docker build -t pishrink .`, then return to the directory with `impsy.img`.
+
+  - `docker run -it --rm --platform linux/arm64 --privileged=true -v $(pwd):/workdir pishrink -Zv impsy.img impsy-shrunk.img`
 
 The final `impsy-shrunk.img.xz` file is ready for release.
 

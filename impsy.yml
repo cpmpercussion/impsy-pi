@@ -32,6 +32,7 @@
     apt:
       pkg:
         - libhdf5-dev
+        - libasound2-dev
         - unzip
         - pkg-config
         - python3-pip
@@ -69,47 +70,47 @@
   - name: Git checkout IMPSY
     ansible.builtin.git:
       repo: 'https://github.com/cpmpercussion/impsy.git'
-      dest: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+      dest: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
       version: main
     tags:
       - setup
 
   - name: Set up Poetry env IMPSY
-    command: poetry env use {{ ansible_env.HOME }}/pyenv/versions/{{ impsy_python_version }}/bin/python
+    command: poetry env use {{ ansible_facts["env"]["HOME"] }}/pyenv/versions/{{ impsy_python_version }}/bin/python
     args:
-      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+      chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
     environment: 
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin:{{ ansible_facts["env"]["HOME"] }}/.pyenv/shims:{{ ansible_facts["env"]["HOME"] }}/.pyenv/bin'
     tags:
       - setup
 
   - name: Poetry Install IMPSY
-    command: poetry install --sync
+    command: poetry sync
     args:
-      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+      chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
     environment: 
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.HOME }}/.pyenv/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin:{{ ansible_facts["env"]["HOME"] }}/.pyenv/shims:{{ ansible_facts["env"]["HOME"] }}/.pyenv/bin'
     tags:
       - setup
 
   - name: Clean out Poetry cache
     command: poetry cache clear --all --no-interaction .
     args:
-      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+      chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
     environment: 
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin'
     tags:
       - setup
 
   - name: Poetry test run IMPSY
     command: poetry run ./start_impsy.py test-mdrnn
     args:
-      chdir: '{{ ansible_env.HOME }}/{{ impsy_loc }}'
+      chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
     environment:
-      PATH: '{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin'
     tags:
       - setup
 

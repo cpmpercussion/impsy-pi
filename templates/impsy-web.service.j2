@@ -3,12 +3,12 @@ Description=IMPSY RPi Module WebUI Startup Script
 After=network.target
 
 [Service]
-ExecStart=/bin/bash {{ ansible_env.HOME }}/{{ impsy_loc }}/examples/rpi/impsy-web.sh
-WorkingDirectory={{ ansible_env.HOME }}/{{ impsy_loc }}
+ExecStart=/bin/bash {{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}/examples/rpi/impsy-web.sh
+WorkingDirectory={{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
-User={{ ansible_user_id }}
+User={{ ansible_facts["user_id"] }}
 
 [Install]
 WantedBy=multi-user.target

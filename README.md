@@ -1,6 +1,6 @@
 # impsy-rpi-image-maker
 
-This repo has tools and instructions to create Raspberry Pi OS images for running [IMPSY](https://github.com/cpmpercussion/imps).
+This repo has tools and instructions to create Raspberry Pi OS images for running [IMPSY](https://github.com/cpmpercussion/impsy).
 
 This repo just contains Ansible playbooks for setting up a fresh image running on a Raspberry Pi.
 
@@ -56,7 +56,7 @@ Once you have setup the host Raspberry Pi, connect it to a network (easiest to u
 
 You will need to ensure that you have installed `ansible` and `sshpass` in order to complete the next step.
 
-1. Run the ansible tasks with `ansible-playbook -i ./hosts.yml ./impsy.yml --ask-pass`
+1. Run the ansible tasks with `./run.sh`
 
 That's it! That should take a while, go get a coffee.
 
@@ -104,5 +104,5 @@ To install on a Raspberry Pi:
 
 ## More and references.
 
-For more information on using IMPSY, see the [main repo](https://github.com/cpmpercussion/imps), or the [workshop site](https://smcclab.github.io/nime-embedded-ai/)
+For more information on using IMPSY, see the [main repo](https://github.com/cpmpercussion/impsy), or the [workshop site](https://smcclab.github.io/nime-embedded-ai/)
 

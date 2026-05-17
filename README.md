@@ -102,7 +102,6 @@ To install on a Raspberry Pi:
 
 > N.B.: Experience seems to show that the image works best on the second boot, and that slower Raspberry Pis (3B+, Zero 2 W), will take quite a while to boot up. Remember that the blinking light on Raspberry Pi indicates disk access.
 
-## More and references.
+## More and references
 
-For more information on using IMPSY, see the [main repo](https://github.com/cpmpercussion/impsy), or the [workshop site](https://smcclab.github.io/nime-embedded-ai/)
-
+For more information on using IMPSY, see the [main repo](https://github.com/cpmpercussion/impsy), or the [IMPSY homepage.](https://charlesmartin.au/impsy-homepage)

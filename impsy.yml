@@ -6,7 +6,7 @@
   vars:
 
     impsy_loc: "impsy"
-    impsy_python_version: 3.11.8
+    impsy_python_version: 3.13.5
     pyenv_python_versions:
         - '{{ impsy_python_version }}'
     pyenv_global:

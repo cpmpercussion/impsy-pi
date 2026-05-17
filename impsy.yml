@@ -2,19 +2,35 @@
 
 - name: Install and configure IMPSy
   hosts: impsypi
-  
+
+  # NOTE: We used to install Python via the staticdev.pyenv Galaxy role here,
+  # because the system Python on Raspberry Pi OS was *too new* for IMPSY —
+  # IMPSY was capped at 3.11 due to the TensorFlow versions it depended on,
+  # and the Pi OS at the time shipped something newer. Pyenv let us drop a
+  # 3.11 interpreter underneath Poetry without touching system Python.
+  #
+  # IMPSY now supports >=3.11,<3.14 and Trixie ships Python 3.13, so the
+  # system interpreter is inside the supported range and pyenv is redundant.
+  # Dropping it saves ~345 MB in ~/pyenv plus the build time, and removes the
+  # Galaxy role dependency.
+  #
+  # If a future IMPSY version tightens its upper bound below Trixie's system
+  # Python again (e.g. another TensorFlow pin), the old approach was:
+  #
+  #   vars:
+  #     impsy_python_version: 3.13.5
+  #     pyenv_python_versions: ['{{ impsy_python_version }}']
+  #     pyenv_global:          ['{{ impsy_python_version }}']
+  #   roles:
+  #     - staticdev.pyenv     # https://galaxy.ansible.com/ui/standalone/roles/staticdev/pyenv/documentation/
+  #
+  # plus `- src: staticdev.pyenv` in requirements.yml (installed once with
+  # `ansible-galaxy install -r requirements.yml`), and `poetry env use` pointed
+  # at ~/pyenv/versions/{{ impsy_python_version }}/bin/python with the pyenv
+  # shims/bin on PATH in the env: blocks of the poetry tasks.
+
   vars:
-
     impsy_loc: "impsy"
-    impsy_python_version: 3.13.5
-    pyenv_python_versions:
-        - '{{ impsy_python_version }}'
-    pyenv_global:
-        - '{{ impsy_python_version }}'
-
-  roles:
-    # https://galaxy.ansible.com/ui/standalone/roles/staticdev/pyenv/documentation/
-    - staticdev.pyenv
 
   tasks:
 
@@ -36,6 +52,7 @@
         - unzip
         - pkg-config
         - python3-pip
+        - python3-venv
         - cmake
         - make
         - git
@@ -76,12 +93,12 @@
       - setup
 
   - name: Set up Poetry env IMPSY
-    command: poetry env use {{ ansible_facts["env"]["HOME"] }}/pyenv/versions/{{ impsy_python_version }}/bin/python
+    command: poetry env use /usr/bin/python3
     args:
       chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
-    environment: 
+    environment:
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin:{{ ansible_facts["env"]["HOME"] }}/.pyenv/shims:{{ ansible_facts["env"]["HOME"] }}/.pyenv/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin'
     tags:
       - setup
 
@@ -89,9 +106,9 @@
     command: poetry sync
     args:
       chdir: '{{ ansible_facts["env"]["HOME"] }}/{{ impsy_loc }}'
-    environment: 
+    environment:
       PYTHON_KEYRING_BACKEND: keyring.backends.null.Keyring
-      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin:{{ ansible_facts["env"]["HOME"] }}/.pyenv/shims:{{ ansible_facts["env"]["HOME"] }}/.pyenv/bin'
+      PATH: '{{ ansible_facts["env"]["PATH"] }}:{{ ansible_facts["env"]["HOME"] }}/.local/bin'
     tags:
       - setup
 

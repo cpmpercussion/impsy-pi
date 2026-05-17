@@ -1,1 +1,9 @@
-- src: staticdev.pyenv
+# No Ansible Galaxy roles currently required.
+#
+# Historically this file contained `- src: staticdev.pyenv` to install a
+# specific Python version on the target Pi — IMPSY was capped at 3.11 (older
+# TensorFlow) while the Pi OS shipped a newer system Python, so pyenv was
+# used to drop a compatible interpreter underneath Poetry. We dropped pyenv
+# once IMPSY's supported range widened to include Trixie's system Python 3.13.
+# See the comment block at the top of impsy.yml if you ever need to bring it
+# back.
